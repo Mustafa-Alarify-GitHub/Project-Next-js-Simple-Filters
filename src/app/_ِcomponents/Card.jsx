@@ -22,8 +22,8 @@ const Card = ({ image, title, rate, countRate, location, countJobs, type }) => {
       <h1
         className={
           type == 1
-            ? "font-bold text-[#66789c] text-xl mt-4"
-            : "font-bold text-[#66789c] text-5xl "
+            ? "font-bold text-[#66789c] text-xl mt-4 capitalize"
+            : "font-bold text-[#66789c] text-5xl  capitalize"
         }
       >
         {title}

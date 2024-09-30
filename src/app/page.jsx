@@ -2,38 +2,116 @@
 import { useEffect, useState } from "react";
 import Card from "./_ِcomponents/Card";
 import Pagention from "./_ِcomponents/Pagention";
+import { useForm } from "react-hook-form";
+import { FaSearch } from "react-icons/fa";
+import ListCheckBox from "./_ِcomponents/ListCheckBox";
+
 export default function Home() {
   const [refrach, setRefrach] = useState(true);
   const [modeSort, setModeSort] = useState(1);
-  const [dataJobs, setDataJobs] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pagention, setPagention] = useState(1);
   const [countData, setCountData] = useState(12);
 
+  // Variable List Check Box
+  const [Bonus, setBonus] = useState("");
+  const [industry, setIndustry] = useState("All");
+  const [Location, setLocation] = useState("All");
+
+  //Variable Data Api
+  const [dataJobs, setDataJobs] = useState([]);
+  const [dataIndustry, setDataIndustry] = useState([]);
+  const [dataLocation, setDataLocation] = useState([]);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
   useEffect(() => {
     const fetchData = async () => {
       const respones = await fetch(
-        `http://localhost:3000/Api/Companies?pageNumber=${pageNumber}&countData=${countData}`
+        `http://localhost:3000/Api/Companies?pageNumber=${pageNumber}&countData=${countData}&industry=${industry}&location=${Location}`
       );
       const bodyjson = await respones.json();
       setDataJobs(bodyjson.data);
       setPagention(Math.ceil(bodyjson.countAllData));
+      setDataIndustry(bodyjson.industry);
+      setDataLocation(bodyjson.location);
     };
 
     fetchData();
-  }, [refrach, pageNumber, countData]);
+  }, [refrach, pageNumber, countData, industry, Location]);
+
+  // Event Search
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
-    <div className="w-screen h-screen flex justify-center gap-5">
-      {/* search */}
-      <div className="w-1/5 h-full bg-backgroundWhite"></div>
+    <div className="w-screen h-screen flex justify-center gap-5 ">
+      {/* Falter */}
+      <div className="div-filter w-1/5 h-full mt-16 pt-5 overflow-y-scroll">
+        {/* search */}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full flex justify-center gap-1"
+        >
+          <button
+            className="border-2 p-3 rounded-xl border-backgroundWhite"
+            type="submit"
+          >
+            <FaSearch />
+          </button>
+
+          <input
+            {...register("searchText")}
+            placeholder="Search"
+            className="border-2 p-3 rounded-xl border-backgroundWhite"
+          />
+        </form>
+
+        <ListCheckBox
+          subtitle={"Bonus"}
+          data={[
+            {
+              title: "All",
+              count: 40,
+            },
+            {
+              title: "With Bonus",
+              count: 20,
+            },
+            {
+              title: "Without Bonus",
+              count: 20,
+            },
+          ]}
+          setValue={setBonus}
+          value={Bonus}
+        />
+        <ListCheckBox
+          subtitle={"Industry"}
+          data={dataIndustry}
+          setValue={setIndustry}
+          value={industry}
+        />
+        <ListCheckBox
+          subtitle={"Location"}
+          data={dataLocation}
+          setValue={setLocation}
+          value={Location}
+        />
+      </div>
 
       {/* div Main */}
       <div className="w-3/4 flex flex-col">
         {/* Nav */}
         <div className="w-full h-[68px] border-b-2 border-gray-300 flex justify-start flex-row-reverse p-3 px-9 ">
           {/* icon Grid */}
-          <svg
+          {/* <svg
             onClick={() => setModeSort(1)}
             xmlns="http://www.w3.org/2000/svg"
             width="40"
@@ -80,9 +158,9 @@ export default function Home() {
               rx="1"
               fill={modeSort != 1 ? "#4285f4" : "#fff"}
             />
-          </svg>
+          </svg> */}
           {/* Icon List */}
-          <svg
+          {/* <svg
             onClick={() => setModeSort(2)}
             xmlns="http://www.w3.org/2000/svg"
             width="40"
@@ -99,7 +177,7 @@ export default function Home() {
               fill-rule="evenodd"
               d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
             />
-          </svg>
+          </svg> */}
           {/* Drop Box Show 3 6 9 12 */}
           <select
             onChange={(e) => {
