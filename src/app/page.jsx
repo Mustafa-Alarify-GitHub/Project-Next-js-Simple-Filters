@@ -31,24 +31,26 @@ export default function Home() {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const respones = await fetch(
-        `http://localhost:3000/Api/Companies?pageNumber=${pageNumber}&countData=${countData}&industry=${industry}&location=${Location}`
-      );
-      const bodyjson = await respones.json();
-      setDataJobs(bodyjson.data);
-      setPagention(Math.ceil(bodyjson.countAllData));
-      setDataIndustry(bodyjson.industry);
-      setDataLocation(bodyjson.location);
-    };
+  const fetchData = async (text_Search) => {
+    const respones = await fetch(
+      `http://localhost:3000/Api/Companies?textSearch=${text_Search}&pageNumber=${pageNumber}&countData=${countData}&industry=${industry}&location=${Location}`
+    );
+    const bodyjson = await respones.json();
+    setDataJobs(bodyjson.data);
+    setPagention(Math.ceil(bodyjson.countAllData));
+    setDataIndustry(bodyjson.industry);
+    setDataLocation(bodyjson.location);
+  };
 
-    fetchData();
+  useEffect(() => {
+   
+
+    fetchData("All");
   }, [refrach, pageNumber, countData, industry, Location]);
 
   // Event Search
   const onSubmit = (data) => {
-    console.log(data);
+    fetchData(data.searchText);
   };
 
   return (

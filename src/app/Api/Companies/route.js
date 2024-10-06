@@ -14,17 +14,30 @@ export async function GET(req) {
   const propCountData = req.nextUrl.searchParams.get("countData") || 12;
   const propIndustry = req.nextUrl.searchParams.get("industry") || "All";
   const propLocation = req.nextUrl.searchParams.get("location") || "All";
+  const textSearch = req.nextUrl.searchParams.get("textSearch") || "All";
 
   console.log(propLocation);
 
   // Data
   let allData = StaticData;
+
   if (propIndustry !== "All") {
     allData = allData.filter((item) => item.industry === propIndustry);
   }
+
   if (propLocation !== "All") {
     allData = allData.filter((item) => item.location === propLocation);
   }
+  // Search
+  if (textSearch !== "All") {
+    allData = StaticData.filter((item) => {
+      const name = item.name.toLowerCase().includes(textSearch.toLowerCase());
+      if (name) return name;
+      const location = item.location.toLowerCase().includes(textSearch.toLowerCase());
+      return location;
+    });
+  }
+
   // count ==> pagetions
   const countAllData = allData.length / propCountData;
 
