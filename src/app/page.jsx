@@ -51,6 +51,7 @@ export default function Home() {
   // Event Search
   const onSubmit = (data) => {
     fetchData(data.searchText);
+    setIsOpenFelter(false)
   };
 
   return (
