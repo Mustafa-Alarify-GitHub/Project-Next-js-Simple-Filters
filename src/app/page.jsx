@@ -8,6 +8,7 @@ import ListCheckBox from "./_ِcomponents/ListCheckBox";
 
 export default function Home() {
   const [refrach, setRefrach] = useState(true);
+  const [isOpenFelter, setIsOpenFelter] = useState(false);
   const [modeSort, setModeSort] = useState(1);
   const [pageNumber, setPageNumber] = useState(1);
   const [pagention, setPagention] = useState(1);
@@ -53,7 +54,10 @@ export default function Home() {
   return (
     <div className="w-screen h-screen flex justify-center gap-5 ">
       {/* Falter */}
-      <div className="div-filter w-1/5 h-full mt-16 pt-5 overflow-y-scroll">
+      <div className={!isOpenFelter?
+      "absolute left-[-100%] z-10 transition-all bg-white lg:static pos div-filter w-1/5 h-full mt-16 pt-5 overflow-y-scroll"
+        :"absolute left-[0] z-10 transition-all bg-white lg:static pos div-filter lg:w-4/5 h-full mt-16 pt-5 overflow-y-scroll"
+        }>
         {/* search */}
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -107,9 +111,10 @@ export default function Home() {
       </div>
 
       {/* div Main */}
-      <div className="w-3/4 flex flex-col">
+      
+      <div className="lg:w-3/4 w-full  flex flex-col">
         {/* Nav */}
-        <div className="w-full h-[68px] border-b-2 border-gray-300 flex justify-start flex-row-reverse p-3 px-9 ">
+        <div className=" w-full h-[68px] border-b-2 border-gray-300 flex justify-between lg:justify-start flex-row-reverse p-3 px-9 ">
           {/* icon Grid */}
            <svg
             onClick={() => setModeSort(1)}
@@ -192,13 +197,14 @@ export default function Home() {
             <option value="6"> show : 6</option>
             <option value="3"> show : 3</option>
           </select>
+          <button className="block lg:hidden text-4xl font-bold" onClick={()=>setIsOpenFelter(!isOpenFelter)}>=</button>
         </div>
 
         {/* Content Cards */}
         <div
           className={
             modeSort == 1
-              ? "grid grid-cols-3 overflow-x-hidden overflow-y-scroll"
+              ? "grid md:grid-cols-2 lg:grid-cols-3  grid-cols-1 overflow-x-hidden overflow-y-scroll"
               : "grid grid-cols-1 overflow-x-hidden overflow-y-scroll"
           }
         >
