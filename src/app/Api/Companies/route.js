@@ -29,7 +29,7 @@ export async function GET(req) {
     allData = allData.filter((item) => item.location === propLocation);
   }
   // Search
-  if (textSearch !== "All") {
+  if (textSearch !== "All") { 
     allData = StaticData.filter((item) => {
       const name = item.name.toLowerCase().includes(textSearch.toLowerCase());
       if (name) return name;
